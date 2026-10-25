@@ -28,6 +28,9 @@ install:
   - ps: Install-Product node $env:nodejs_version
   # Install declared dependencies
   - npm install --no-audit
+  # Start MongoDB manually: `services: mongodb` does nothing on the
+  # Visual Studio 2026 image (https://github.com/appveyor/ci/issues/4004)
+  - ps: .\scripts\appveyor\start_mongodb.ps1
 
 branches:
   only:
@@ -44,11 +47,6 @@ test_script:
   - npm --version
   # Run the actual tests.
   - npm test
-
-# Setup Mongo Database
-services:
-  - mongodb
-
 
 # Don't actually build.
 # (Not sure what this is for, it's just in Appveyor's example.
